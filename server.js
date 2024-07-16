@@ -24,7 +24,7 @@ db.once('open', ()=>{
 })
 
 // Initializing the app
-const app = express();
+// const app = express();
 
 // View Engine setup (assuming you are using EJS based on your setup)
 app.set('view engine', 'ejs');
