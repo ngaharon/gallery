@@ -1,13 +1,14 @@
 pipeline {
     agent any
     
+       
     tools {
         nodejs 'node'
     }
-
-    stages {
-        stage('Clone Repository') {
+        stages {
+        stage('Clone repository') {
             steps {
+                echo 'Cloning repository...'
                 git credentialsId: 'Js-Gallery-repo', url: 'https://github.com/ngaharon/gallery.git'
             }
         }
@@ -17,10 +18,26 @@ pipeline {
                 sh 'npm install'
             }
         }
-        stage('Build') {
+        stage('Test project') {
             steps {
-                sh 'node server.js'
+                echo 'Testing...'
+                sh 'npm test'
             }
         }
+        
+        stage('Build project') {
+            steps {
+                echo 'Building...'
+                sh 'npm run'
+            }
+        }
+        
+        stage('Start server') {
+            steps {
+                echo 'Starting server...'
+                sh 'npm start &'
+                sleep time: 10, unit: 'SECONDS' // Time for the server to start
+            }
+        }  
     }
 }
