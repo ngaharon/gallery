@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+    
+       
+    tools {
+        nodejs 'node'
+    }
+        stages {
+        stage('Clone repository') {
+            steps {
+                echo 'Cloning repository...'
+                git credentialsId: 'Js-Gallery-repo', url: 'https://github.com/ngaharon/gallery.git'
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm --version'
+                sh 'npm install'
+            }
+        }
+        stage('Test project') {
+            steps {
+                echo 'Testing...'
+                sh 'npm test'
+            }
+        }
+        
+        stage('Build project') {
+            steps {
+                echo 'Building...'
+                sh 'npm run'
+            }
+        }
+        
+        stage('Start server') {
+            steps {
+                echo 'Starting server...'
+                sh 'npm start &'
+                sleep time: 10, unit: 'SECONDS' // Time for the server to start
+            }
+        }  
+    }
+}
